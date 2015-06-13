@@ -2,6 +2,7 @@
 
 namespace Klsandbox\SmsManager;
 
+use App\Http\Controllers\Controller;
 use Klsandbox\SiteModel\Site;
 use Illuminate\Support\Facades\App;
 
