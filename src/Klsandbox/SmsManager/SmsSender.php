@@ -3,8 +3,6 @@
 namespace Klsandbox\SmsManager;
 
 use Config;
-use App\Models\SmsBalance;
-use App\Models\User;
 use Klsandbox\SiteModel\Site;
 use Request;
 use Input;
@@ -26,7 +24,7 @@ class SmsSender {
         return $this->router;
     }
 
-    public function send($route, $target_id, User $user, Site $site, \Illuminate\Console\Command $command) {
+    public function send($route, $target_id, \Illuminate\Database\Eloquent\Model $user, Site $site, \Illuminate\Console\Command $command) {
         Site::protect($user, 'User');
         
         $url = $route . '/' . $user->id . '/' . $target_id;

@@ -3,7 +3,6 @@
 namespace Klsandbox\SmsManager;
 
 use Illuminate\Database\Seeder;
-use App\Models\SmsBalance;
 use Klsandbox\SiteModel\Site;
 
 class SmsBalanceTableSeeder extends Seeder {

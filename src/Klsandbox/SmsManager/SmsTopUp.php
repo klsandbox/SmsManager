@@ -3,7 +3,6 @@
 namespace Klsandbox\SmsManager;
 
 use Illuminate\Console\Command;
-use App\Models\SmsBalance;
 use Klsandbox\SiteModel\Site;
 
 class SmsTopUp extends Command {

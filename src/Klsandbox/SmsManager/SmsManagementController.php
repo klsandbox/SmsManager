@@ -3,8 +3,6 @@
 namespace Klsandbox\SmsManager;
 
 use Klsandbox\SiteModel\Site;
-use App\Models\SmsBalance;
-use App\Models\SmsTransactionLog;
 use Illuminate\Support\Facades\App;
 
 class SmsManagementController extends Controller {
