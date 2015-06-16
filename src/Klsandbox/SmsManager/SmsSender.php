@@ -26,14 +26,13 @@ class SmsSender {
 
     public function send($route, $target_id, \Illuminate\Database\Eloquent\Model $user, Site $site, \Illuminate\Console\Command $command) {
         Site::protect($user, 'User');
-        
+
         $url = $route . '/' . $user->id . '/' . $target_id;
-        
+
         $request = Request::create($url, 'GET');
         Input::initialize([]);
-        
-        if ($command->option('verbose'))
-        {
+
+        if ($command->option('verbose')) {
             $command->comment("route:" . $route);
         }
 
@@ -61,11 +60,19 @@ class SmsSender {
         } else {
             $response = file_get_contents($url);
 
+            if ($command->option('verbose')) {
+                $command->comment("reponse:" . $response);
+            }
+
             if (preg_match("/^1701/", $response)) {
                 $balance = SmsBalance::where('site_id', '=', $site->id)->first();
                 $balance->Spend($note);
-                
+
                 return $response;
+            } elseif (preg_match("/^1704/", $response)) {
+                $command->error("Insufficient Credits from provider");
+            } elseif (preg_match("/^1705/", $response)) {
+                $command->error("Invalid Mobile Number");
             }
         }
 
