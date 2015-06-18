@@ -40,6 +40,12 @@ class SmsSender {
 
         $view = 'sms.' . $route;
         $message = view($view, $data);
+        
+        if (Config::get('sms-manager.prefix'))
+        {
+            $message = Config::get('sms-manager.prefix') . $message;
+        }
+        
         $receiver_number = env('SMS_ADMIN_PHONE', $data['receiver_number']);
         $to = $user->name;
 

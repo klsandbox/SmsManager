@@ -9,4 +9,5 @@ return [
     'sender' => env('SMS_SENDER'),
     'type' => env('SMS_TYPE', 1),
     'pretend' => false,
+    'prefix' => null,
 ];
