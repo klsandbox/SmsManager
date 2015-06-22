@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SmsTransactionLog extends Model {
 
+    use \Klsandbox\SiteModel\SiteExtensions;
+
     protected $fillable = ['delta', 'note'];
 
     //

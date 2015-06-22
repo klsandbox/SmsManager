@@ -71,7 +71,7 @@ class SmsSender {
             }
 
             if (preg_match("/^1701/", $response)) {
-                $balance = SmsBalance::where('site_id', '=', $site->id)->first();
+                $balance = SmsBalance::forSite()->first();
                 $balance->Spend($note);
 
                 return $response;

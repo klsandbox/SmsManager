@@ -17,7 +17,7 @@ class SmsTopUp extends Command {
     public function fire() {
         $this->comment('top up for site ' . Site::key());
 
-        $balance = SmsBalance::where('site_id', '=', Site::id())->first();
+        $balance = SmsBalance::forSite()->first();
         
         if (!$balance)
         {

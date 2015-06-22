@@ -33,7 +33,7 @@ class SmsManagementController extends Controller {
 
     public function getView() {
 
-        $smsBalances = SmsBalance::where('site_id', '=', Site::id())->get();
+        $smsBalances = SmsBalance::forSite()->get();
         if ($smsBalances->count() == 0) {
             App::abort(404, 'SMS not found for site');
         }
@@ -46,11 +46,11 @@ class SmsManagementController extends Controller {
 
         $totalBalance = $smsBalance->balance;
 
-        $items = SmsTransactionLog::where('site_id', '=', Site::id())
+        $items = SmsTransactionLog::forSite()
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
-        $lastTransactionLog = SmsTransactionLog::where('site_id', '=', Site::id())
+        $lastTransactionLog = SmsTransactionLog::forSite()
                 ->where('delta', '>', 0)
                 ->orderBy('created_at', 'DESC')
                 ->first();
