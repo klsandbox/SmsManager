@@ -11,17 +11,11 @@ class SmsBalanceTableSeeder extends Seeder {
         if (SmsBalance::count() > 0) {
             return;
         }
-        
+
         foreach (Site::all() as $site) {
-            Site::setSite($site);
-            $this->runForSite($site->id);
+            SmsBalance::create(array(
+                'balance' => 0,
+            ));
         }
-    }
-    
-    public function runForSite($siteId) {
-        SmsBalance::create(array(
-            'balance' => 0,
-            'site_id' => $siteId,
-        ));
     }
 }

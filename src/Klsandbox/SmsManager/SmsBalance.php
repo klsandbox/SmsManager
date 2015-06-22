@@ -26,7 +26,7 @@ class SmsBalance extends Model {
     //
 
     public function TopUp($count, $note) {
-        SmsTransactionLog::create(['site_id' => $this->site_id, 'delta' => $count, 'note' => 'top up:' . $note]);
+        SmsTransactionLog::create(['delta' => $count, 'note' => 'top up:' . $note]);
         $this->balance += $count;
         $this->save();
     }
@@ -36,7 +36,7 @@ class SmsBalance extends Model {
             App::abort(500, 'Insufficient credits.');
         }
 
-        SmsTransactionLog::create(['site_id' => $this->site_id, 'delta' => -1, 'note' => 'spend:' . $note]);
+        SmsTransactionLog::create(['delta' => -1, 'note' => 'spend:' . $note]);
         $this->balance -= 1;
         $this->save();
     }

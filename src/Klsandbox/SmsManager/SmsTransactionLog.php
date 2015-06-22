@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SmsTransactionLog extends Model {
 
-    protected $fillable = ['site_id', 'delta', 'note'];
+    protected $fillable = ['delta', 'note'];
 
     //
 }
