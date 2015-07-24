@@ -13,9 +13,11 @@ class SmsBalanceTableSeeder extends Seeder {
         }
 
         foreach (Site::all() as $site) {
+            Site::setSite($site);
             SmsBalance::create(array(
                 'balance' => 0,
             ));
         }
     }
+
 }
