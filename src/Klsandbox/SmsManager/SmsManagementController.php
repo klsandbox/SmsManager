@@ -48,7 +48,7 @@ class SmsManagementController extends Controller {
 
         $items = SmsTransactionLog::forSite()
                 ->orderBy('created_at', 'DESC')
-                ->get();
+                ->paginate(100);
 
         $lastTransactionLog = SmsTransactionLog::forSite()
                 ->where('delta', '>', 0)
