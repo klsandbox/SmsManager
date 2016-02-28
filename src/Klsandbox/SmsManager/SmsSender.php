@@ -67,7 +67,7 @@ class SmsSender {
             $response = file_get_contents($url);
 
             if ($command->option('verbose')) {
-                $command->comment("reponse:" . $response);
+                $command->comment("response:" . $response);
             }
 
             if (preg_match("/^1701/", $response)) {
