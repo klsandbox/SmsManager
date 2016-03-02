@@ -46,7 +46,8 @@ class SmsSender {
             $message = Config::get('sms-manager.prefix') . $message;
         }
         
-        $receiver_number = env('SMS_ADMIN_PHONE', $data['receiver_number']);
+        $adminPhone = Config::get('sms-manager.admin_phone');
+        $receiver_number = $adminPhone ? $adminPhone : $data['receiver_number'];
         $to = $user->name;
 
         $note = "message:$message - to:$to - number:$receiver_number";

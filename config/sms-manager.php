@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+	'admin_phone' => env('SMS_ADMIN_PHONE'),
     'host' => env('SMS_HOST', 'localhost:8000'),
     'route' => env('SMS_ROUTE', 'sms-management/fake-sms'),
     'username' => env('SMS_USERNAME'),
