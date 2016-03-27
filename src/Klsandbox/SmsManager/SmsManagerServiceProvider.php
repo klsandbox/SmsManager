@@ -38,6 +38,10 @@ class SmsManagerServiceProvider extends ServiceProvider {
     }
 
     public function boot() {
+        if (!$this->app->routesAreCached()) {
+            require __DIR__ . '/../../../routes/routes.php';
+        }
+
         $this->publishes([
             __DIR__ . '/../../../database/migrations/' => database_path('/migrations')
                 ], 'migrations');
