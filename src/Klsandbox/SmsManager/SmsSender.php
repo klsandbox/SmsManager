@@ -3,28 +3,32 @@
 namespace Klsandbox\SmsManager;
 
 use Config;
+use Illuminate\Routing\Router;
+use Input;
 use Klsandbox\SiteModel\Site;
 use Request;
-use Input;
-use Illuminate\Routing\Router;
 
-class SmsSender {
+class SmsSender
+{
 
     private $router;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->router = new Router(app('events'), app());
     }
 
     /**
-     * 
+     *
      * @return \Illuminate\Routing\Router
      */
-    public function getRouter() {
+    public function getRouter()
+    {
         return $this->router;
     }
 
-    public function send($route, $target_id, \Illuminate\Database\Eloquent\Model $user, Site $site, \Illuminate\Console\Command $command) {
+    private function getMessage($route, $target_id, \Illuminate\Database\Eloquent\Model $user, \Illuminate\Console\Command $command)
+    {
         Site::protect($user, 'User');
 
         $url = $route . '/' . $user->id . '/' . $target_id;
@@ -40,17 +44,41 @@ class SmsSender {
 
         $view = 'sms.' . $route;
         $message = view($view, $data);
-        
-        if (Config::get('sms-manager.prefix'))
-        {
+
+        if (Config::get('sms-manager.prefix')) {
             $message = Config::get('sms-manager.prefix') . $message;
         }
-        
+
         $adminPhone = Config::get('sms-manager.admin_phone');
         $receiver_number = $adminPhone ? $adminPhone : $data['receiver_number'];
         $to = $user->name;
 
-        $note = "message:$message - to:$to - number:$receiver_number";
+        return (object)['to' => $to, 'receiver_number' => $receiver_number, 'message' => $message];
+    }
+
+    public function validate($route, $target_id, \Illuminate\Database\Eloquent\Model $user, Site $site, \Illuminate\Console\Command $command)
+    {
+        $message = $this->getMessage($route, $target_id, $user, $command);
+
+        if (!$message->receiver_number)
+        {
+            return false;
+        }
+
+        if (preg_match("/^6[057][0-9]{8,11}$/", $message->receiver_number))
+        {
+            return true;
+        }
+
+        $command->error('Phone number failed validation ' . $message->receiver_number);
+        return false;
+    }
+
+    public function send($route, $target_id, \Illuminate\Database\Eloquent\Model $user, Site $site, \Illuminate\Console\Command $command)
+    {
+        $messageObject = $this->getMessage($route, $target_id, $user, $command);
+
+        $note = "message:$messageObject->message - to:$messageObject->to - number:$messageObject->receiver_number";
 
         $sms_host = (Config::get('sms-manager.host'));
         $sms_route = (Config::get('sms-manager.route'));
@@ -58,8 +86,8 @@ class SmsSender {
         $sms_password = urlencode(Config::get('sms-manager.password'));
         $sms_sender = urlencode(Config::get('sms-manager.sender'));
         $sms_type = urlencode(Config::get('sms-manager.type'));
-        $message = urlencode($message);
-        $url = "http://$sms_host/$sms_route?username=$sms_username&password=$sms_password&message=$message&mobile=$receiver_number&sender=$sms_sender&type=$sms_type";
+        $message = urlencode($messageObject->message);
+        $url = "http://$sms_host/$sms_route?username=$sms_username&password=$sms_password&message=$message&mobile=$messageObject->receiver_number&sender=$sms_sender&type=$sms_type";
         $command->comment("SMS - $note - url:$url");
 
         if (Config::get('sms-manager.pretend')) {
