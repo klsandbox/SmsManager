@@ -53,6 +53,12 @@ class SmsSender
         $receiver_number = $adminPhone ? $adminPhone : $data['receiver_number'];
         $to = $user->name;
 
+        // HACKHACK: Needs to update the database instead
+        if ($receiver_number[0] != '6')
+        {
+            $receiver_number = '6' . $receiver_number;
+        }
+
         return (object)['to' => $to, 'receiver_number' => $receiver_number, 'message' => $message];
     }
 
