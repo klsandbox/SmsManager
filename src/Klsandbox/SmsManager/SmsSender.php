@@ -54,8 +54,7 @@ class SmsSender
         $to = $user->name;
 
         // HACKHACK: Needs to update the database instead
-        if ($receiver_number[0] != '6')
-        {
+        if ($receiver_number[0] != '6') {
             $receiver_number = '6' . $receiver_number;
         }
 
@@ -66,13 +65,11 @@ class SmsSender
     {
         $message = $this->getMessage($route, $target_id, $user, $command);
 
-        if (!$message->receiver_number)
-        {
+        if (!$message->receiver_number) {
             return false;
         }
 
-        if (preg_match("/^6[057][0-9]{8,11}$/", $message->receiver_number))
-        {
+        if (preg_match("/^6[057][0-9]{8,11}$/", $message->receiver_number)) {
             return true;
         }
 
@@ -114,6 +111,8 @@ class SmsSender
                 $command->error("Insufficient Credits from provider");
             } elseif (preg_match("/^1705/", $response)) {
                 $command->error("Invalid Mobile Number");
+            } else {
+                $command->error("Unmatched Error:" . $response);
             }
         }
 
