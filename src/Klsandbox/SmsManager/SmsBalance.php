@@ -18,6 +18,7 @@ use App;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereBalance($value)
+ * @mixin \Eloquent
  */
 class SmsBalance extends Model {
 

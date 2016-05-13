@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsTransactionLog whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsTransactionLog whereDelta($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsTransactionLog whereNote($value)
+ * @mixin \Eloquent
  */
 class SmsTransactionLog extends Model {
 
