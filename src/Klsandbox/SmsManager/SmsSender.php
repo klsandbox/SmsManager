@@ -10,7 +10,6 @@ use Request;
 
 class SmsSender
 {
-
     private $router;
 
     public function __construct()
@@ -19,7 +18,6 @@ class SmsSender
     }
 
     /**
-     *
      * @return \Illuminate\Routing\Router
      */
     public function getRouter()
@@ -37,7 +35,7 @@ class SmsSender
         Input::initialize([]);
 
         if ($command->option('verbose')) {
-            $command->comment("route:" . $route);
+            $command->comment('route:' . $route);
         }
 
         $data = $this->router->dispatch($request)->getOriginalContent();
@@ -58,7 +56,7 @@ class SmsSender
             $receiver_number = '6' . $receiver_number;
         }
 
-        return (object)['to' => $to, 'receiver_number' => $receiver_number, 'message' => $message];
+        return (object) ['to' => $to, 'receiver_number' => $receiver_number, 'message' => $message];
     }
 
     public function validate($route, $target_id, \Illuminate\Database\Eloquent\Model $user, Site $site, \Illuminate\Console\Command $command)
@@ -69,11 +67,12 @@ class SmsSender
             return false;
         }
 
-        if (preg_match("/^6[057][0-9]{8,11}$/", $message->receiver_number)) {
+        if (preg_match('/^6[057][0-9]{8,11}$/', $message->receiver_number)) {
             return true;
         }
 
         $command->error('Phone number failed validation ' . $message->receiver_number);
+
         return false;
     }
 
@@ -99,24 +98,23 @@ class SmsSender
             $response = file_get_contents($url);
 
             if ($command->option('verbose')) {
-                $command->comment("response:" . $response);
+                $command->comment('response:' . $response);
             }
 
-            if (preg_match("/^1701/", $response)) {
+            if (preg_match('/^1701/', $response)) {
                 $balance = SmsBalance::forSite()->first();
                 $balance->Spend($note);
 
                 return $response;
-            } elseif (preg_match("/^1704/", $response)) {
-                $command->error("Insufficient Credits from provider");
-            } elseif (preg_match("/^1705/", $response)) {
-                $command->error("Invalid Mobile Number");
+            } elseif (preg_match('/^1704/', $response)) {
+                $command->error('Insufficient Credits from provider');
+            } elseif (preg_match('/^1705/', $response)) {
+                $command->error('Invalid Mobile Number');
             } else {
-                $command->error("Unmatched Error:" . $response);
+                $command->error('Unmatched Error:' . $response);
             }
         }
 
         return false;
     }
-
 }

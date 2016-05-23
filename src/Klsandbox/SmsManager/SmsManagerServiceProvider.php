@@ -4,8 +4,8 @@ namespace Klsandbox\SmsManager;
 
 use Illuminate\Support\ServiceProvider;
 
-class SmsManagerServiceProvider extends ServiceProvider {
-
+class SmsManagerServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -18,8 +18,9 @@ class SmsManagerServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
-        $this->app->singleton('command.klsandbox.smstopup', function($app) {
+    public function register()
+    {
+        $this->app->singleton('command.klsandbox.smstopup', function ($app) {
             return new SmsTopUp();
         });
 
@@ -31,23 +32,25 @@ class SmsManagerServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return [
             'command.klsandbox.smstopup',
         ];
     }
 
-    public function boot() {
+    public function boot()
+    {
         if (!$this->app->routesAreCached()) {
             require __DIR__ . '/../../../routes/routes.php';
         }
 
         $this->publishes([
-            __DIR__ . '/../../../database/migrations/' => database_path('/migrations')
+            __DIR__ . '/../../../database/migrations/' => database_path('/migrations'),
                 ], 'migrations');
 
         $this->publishes([
-            __DIR__ . '/../../../config/' => config_path()
+            __DIR__ . '/../../../config/' => config_path(),
                 ], 'config');
 
         $this->loadViewsFrom(
@@ -57,5 +60,4 @@ class SmsManagerServiceProvider extends ServiceProvider {
             __DIR__ . '/../../../views/' => base_path('resources/views/vendor/sms-manager'),
         ]);
     }
-
 }

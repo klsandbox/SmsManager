@@ -5,9 +5,10 @@ namespace Klsandbox\SmsManager;
 use Illuminate\Database\Seeder;
 use Klsandbox\SiteModel\Site;
 
-class SmsBalanceTableSeeder extends Seeder {
-
-    public function run() {
+class SmsBalanceTableSeeder extends Seeder
+{
+    public function run()
+    {
         if (SmsBalance::count() > 0) {
             return;
         }
@@ -19,5 +20,4 @@ class SmsBalanceTableSeeder extends Seeder {
             ));
         }
     }
-
 }

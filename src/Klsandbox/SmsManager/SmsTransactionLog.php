@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $updated_at
  * @property integer $delta
  * @property string $note
+ *
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsTransactionLog whereSiteId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsTransactionLog whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsTransactionLog whereCreatedAt($value)
@@ -21,8 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsTransactionLog whereNote($value)
  * @mixin \Eloquent
  */
-class SmsTransactionLog extends Model {
-
+class SmsTransactionLog extends Model
+{
     use \Klsandbox\SiteModel\SiteExtensions;
 
     protected $fillable = ['delta', 'note'];

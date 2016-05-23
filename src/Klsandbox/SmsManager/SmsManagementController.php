@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Klsandbox\SiteModel\Site;
 use Illuminate\Support\Facades\App;
 
-class SmsManagementController extends Controller {
+class SmsManagementController extends Controller
+{
     /*
       |--------------------------------------------------------------------------
       | Home Controller
@@ -23,16 +24,18 @@ class SmsManagementController extends Controller {
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth', ['except' => 'getFakeSms']);
     }
 
-    public function getFakeSms() {
-        return "1701:" . mt_rand(1000000, 99999999);
+    public function getFakeSms()
+    {
+        return '1701:' . mt_rand(1000000, 99999999);
     }
 
-    public function getView() {
-
+    public function getView()
+    {
         $smsBalances = SmsBalance::forSite()->get();
         if ($smsBalances->count() == 0) {
             App::abort(404, 'SMS not found for site');
@@ -69,5 +72,4 @@ class SmsManagementController extends Controller {
                         ->with('last_reload_time', $last_reload_time)
                         ->with('last_reload_amount', $last_reload_amount);
     }
-
 }

@@ -13,6 +13,7 @@ use App;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property integer $balance
+ *
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereSiteId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereCreatedAt($value)
@@ -20,21 +21,23 @@ use App;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereBalance($value)
  * @mixin \Eloquent
  */
-class SmsBalance extends Model {
-
+class SmsBalance extends Model
+{
     use \Klsandbox\SiteModel\SiteExtensions;
 
     protected $fillable = [];
 
     //
 
-    public function TopUp($count, $note) {
+    public function TopUp($count, $note)
+    {
         SmsTransactionLog::create(['delta' => $count, 'note' => 'top up:' . $note]);
         $this->balance += $count;
         $this->save();
     }
 
-    public function Spend($note) {
+    public function Spend($note)
+    {
         if ($this->balance <= 1) {
             App::abort(500, 'Insufficient credits.');
         }
@@ -43,5 +46,4 @@ class SmsBalance extends Model {
         $this->balance -= 1;
         $this->save();
     }
-
 }
