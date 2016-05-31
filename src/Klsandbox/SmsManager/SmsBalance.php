@@ -13,7 +13,6 @@ use App;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property integer $balance
- *
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereSiteId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SmsBalance whereCreatedAt($value)
