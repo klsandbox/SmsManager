@@ -76,28 +76,84 @@
                 <h2 class="panel-title">Sms Status</h2>
             </header>
             <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-condensed mb-none">
-                        <thead>
-                        <tr>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Timestamp</th>
-                            <th class="text-center">Change</th>
-                            <th class="text-center">Note</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($list as $item)
-                            <tr>
-                                <td id="sms_transaction_log_id">#{{1024 + $item->id}}</td>
-                                <td class="text-center">{{$item->created_at}}</td>
-                                <td id="sms_transaction_log_change" class="text-center">{{$item->delta}}</td>
-                                <td id="sms_transaction_log_note">{{$item->note}}</td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    {!! $list->render() !!}
+                @include('elements.error-message-partial')
+                @include('elements.success-message-partial')
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#sent">Sent</a></li>
+                    <li><a data-toggle="tab" href="#pending">Pending</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="sent" class="tab-pane fade in active">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-condensed mb-none">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Timestamp</th>
+                                    <th class="text-center">Change</th>
+                                    <th class="text-center">Note</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($list as $item)
+                                    <tr>
+                                        <td id="sms_transaction_log_id">#{{1024 + $item->id}}</td>
+                                        <td class="text-center">{{$item->created_at}}</td>
+                                        <td id="sms_transaction_log_change" class="text-center">{{$item->delta}}</td>
+                                        <td id="sms_transaction_log_note">{{$item->note}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            {!! $list->render() !!}
+                        </div>
+                    </div>
+                    <div id="pending" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form method="post" action="{{ url('sms-management/delete-all') }}">
+                                    {{ csrf_field() }}
+                                    <button class="btn btn-danger pull-right delete_with_confirm"><i class="fa fa-trash"></i> Delete all pending notification</button>
+                                </form>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-condensed mb-none">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">ID</th>
+                                            <th class="text-center">From</th>
+                                            <th class="text-center">To</th>
+                                            <th class="text-center">Channel</th>
+                                            <th class="text-center">Route</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($pendingItems as $pendingItem)
+                                                <tr>
+                                                    <td>{{ $pendingItem->id }}</td>
+                                                    <td>{{ $pendingItem->toUser->name }}</td>
+                                                    <td>{{ $pendingItem->fromUser->name }}</td>
+                                                    <td>{{ $pendingItem->channel }}</td>
+                                                    <td>{{ $pendingItem->route }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination">
+                                        {!!  $pendingItems->render()  !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
