@@ -131,7 +131,7 @@
                                             <th class="text-center">ID</th>
                                             <th class="text-center">From</th>
                                             <th class="text-center">To</th>
-                                            <th class="text-center">Channel</th>
+                                            <th class="text-center">Phone</th>
                                             <th class="text-center">Route</th>
                                         </tr>
                                         </thead>
@@ -139,9 +139,9 @@
                                             @foreach($pendingItems as $pendingItem)
                                                 <tr>
                                                     <td>{{ $pendingItem->id }}</td>
-                                                    <td>{{ $pendingItem->toUser->name }}</td>
-                                                    <td>{{ $pendingItem->fromUser->name }}</td>
-                                                    <td>{{ $pendingItem->channel }}</td>
+                                                    <td>@link($pendingItem->fromUser)</td>
+                                                    <td>@link($pendingItem->toUser)</td>
+                                                    <td>{{ $pendingItem->toUser->phone }}</td>
                                                     <td>{{ $pendingItem->route }}</td>
                                                 </tr>
                                             @endforeach
