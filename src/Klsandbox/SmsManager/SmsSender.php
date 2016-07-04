@@ -40,6 +40,11 @@ class SmsSender
 
         $data = $this->router->dispatch($request)->getOriginalContent();
 
+        if ($data === null)
+        {
+            return null;
+        }
+
         $view = 'sms.' . $route;
         $message = view($view, $data);
 
@@ -62,6 +67,11 @@ class SmsSender
     public function validate($route, $target_id, \Illuminate\Database\Eloquent\Model $user, Site $site, \Illuminate\Console\Command $command)
     {
         $message = $this->getMessage($route, $target_id, $user, $command);
+
+        if ($message === null)
+        {
+            return null;
+        }
 
         if (!$message->receiver_number) {
             return false;
