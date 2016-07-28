@@ -27,8 +27,6 @@ class SmsSender
 
     private function getMessage($route, $target_id, \Illuminate\Database\Eloquent\Model $user, \Illuminate\Console\Command $command)
     {
-        Site::protect($user, 'User');
-
         $url = $route . '/' . $user->id . '/' . $target_id;
 
         $request = Request::create($url, 'GET');
@@ -112,7 +110,7 @@ class SmsSender
             }
 
             if (preg_match('/^1701/', $response)) {
-                $balance = SmsBalance::forSite()->first();
+                $balance = SmsBalance::first();
                 $balance->Spend($note);
 
                 return $response;

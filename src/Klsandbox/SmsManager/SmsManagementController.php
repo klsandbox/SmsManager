@@ -4,7 +4,6 @@ namespace Klsandbox\SmsManager;
 
 use App\Http\Controllers\Controller;
 use Klsandbox\NotificationService\Models\NotificationRequest;
-use Klsandbox\SiteModel\Site;
 use Illuminate\Support\Facades\App;
 
 class SmsManagementController extends Controller
@@ -37,7 +36,7 @@ class SmsManagementController extends Controller
 
     public function getView()
     {
-        $smsBalances = SmsBalance::forSite()->get();
+        $smsBalances = SmsBalance::all();
 
         if ($smsBalances->count() == 0) {
             App::abort(404, 'SMS not found for site');
@@ -51,17 +50,14 @@ class SmsManagementController extends Controller
 
         $totalBalance = $smsBalance->balance;
 
-        $items = SmsTransactionLog::forSite()
-                ->orderBy('created_at', 'DESC')
+        $items = SmsTransactionLog::orderBy('created_at', 'DESC')
                 ->paginate(100);
 
-        $pendingItems = NotificationRequest::forSite()
-            ->with(['toUser', 'fromUser'])
+        $pendingItems = NotificationRequest::with(['toUser', 'fromUser'])
             ->where('sent', false)
             ->paginate(100);
 
-        $lastTransactionLog = SmsTransactionLog::forSite()
-                ->where('delta', '>', 0)
+        $lastTransactionLog = SmsTransactionLog::where('delta', '>', 0)
                 ->orderBy('created_at', 'DESC')
                 ->first();
 
@@ -83,8 +79,7 @@ class SmsManagementController extends Controller
 
     public function deleteAll()
     {
-        NotificationRequest::forSite()
-            ->where('sent', false)
+        NotificationRequest::where('sent', false)
             ->delete();
 
         return redirect()->back()->with('success_message', 'All pending notification has been deleted');
