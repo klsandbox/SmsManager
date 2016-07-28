@@ -22,8 +22,6 @@ use App;
  */
 class SmsBalance extends Model
 {
-    use \Klsandbox\SiteModel\SiteExtensions;
-
     protected $fillable = [];
 
     //

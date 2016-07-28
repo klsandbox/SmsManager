@@ -17,12 +17,12 @@ class SmsTopUp extends Command
 
     public function fire()
     {
-        $this->comment('top up for site ' . Site::key());
+        $this->comment('top up ');
 
-        $balance = SmsBalance::forSite()->first();
+        $balance = SmsBalance::first();
 
         if (!$balance) {
-            $this->error("Sms Balance not found for site '" . Site::key() . "'");
+            $this->error("Sms Balance not found");
 
             return;
         }
