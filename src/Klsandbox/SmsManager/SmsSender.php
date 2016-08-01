@@ -5,7 +5,6 @@ namespace Klsandbox\SmsManager;
 use Config;
 use Illuminate\Routing\Router;
 use Input;
-use Klsandbox\SiteModel\Site;
 use Request;
 
 class SmsSender
@@ -62,7 +61,7 @@ class SmsSender
         return (object) ['to' => $to, 'receiver_number' => $receiver_number, 'message' => $message];
     }
 
-    public function validate($route, $target_id, \Illuminate\Database\Eloquent\Model $user, Site $site, \Illuminate\Console\Command $command)
+    public function validate($route, $target_id, \Illuminate\Database\Eloquent\Model $user, \Illuminate\Console\Command $command)
     {
         $message = $this->getMessage($route, $target_id, $user, $command);
 
@@ -84,7 +83,7 @@ class SmsSender
         return false;
     }
 
-    public function send($route, $target_id, \Illuminate\Database\Eloquent\Model $user, Site $site, \Illuminate\Console\Command $command)
+    public function send($route, $target_id, \Illuminate\Database\Eloquent\Model $user, \Illuminate\Console\Command $command)
     {
         $messageObject = $this->getMessage($route, $target_id, $user, $command);
 

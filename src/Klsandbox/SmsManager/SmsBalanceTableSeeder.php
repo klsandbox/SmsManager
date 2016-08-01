@@ -3,7 +3,6 @@
 namespace Klsandbox\SmsManager;
 
 use Illuminate\Database\Seeder;
-use Klsandbox\SiteModel\Site;
 
 class SmsBalanceTableSeeder extends Seeder
 {
@@ -13,8 +12,8 @@ class SmsBalanceTableSeeder extends Seeder
             return;
         }
 
-            SmsBalance::create(array(
-                'balance' => 0,
-            ));
+        SmsBalance::create(array(
+            'balance' => 0,
+        ));
     }
 }
