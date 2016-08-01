@@ -15,11 +15,5 @@
             "Klsandbox\\SmsManager": "src/"
         }
     },
-    "minimum-stability": "stable",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:mrwaim/sitemodel.git"
-        }
-    ]
+    "minimum-stability": "stable"
 }
