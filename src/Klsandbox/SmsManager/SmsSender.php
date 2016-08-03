@@ -37,8 +37,7 @@ class SmsSender
 
         $data = $this->router->dispatch($request)->getOriginalContent();
 
-        if ($data === null)
-        {
+        if ($data === null) {
             return null;
         }
 
@@ -58,19 +57,24 @@ class SmsSender
             $receiver_number = '6' . $receiver_number;
         }
 
-        return (object) ['to' => $to, 'receiver_number' => $receiver_number, 'message' => $message];
+        return (object)['to' => $to, 'receiver_number' => $receiver_number, 'message' => $message];
     }
 
     public function validate($route, $target_id, \Illuminate\Database\Eloquent\Model $user, \Illuminate\Console\Command $command)
     {
         $message = $this->getMessage($route, $target_id, $user, $command);
 
-        if ($message === null)
-        {
+        if ($message === null) {
             return null;
         }
 
         if (!$message->receiver_number) {
+            return false;
+        }
+
+        $balance = SmsBalance::first();
+        if ($balance->balance <= 0) {
+            $command->error('no balance');
             return false;
         }
 
