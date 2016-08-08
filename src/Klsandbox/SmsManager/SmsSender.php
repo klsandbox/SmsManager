@@ -2,6 +2,7 @@
 
 namespace Klsandbox\SmsManager;
 
+use App\Models\InvalidPhone;
 use Config;
 use Illuminate\Routing\Router;
 use Input;
@@ -49,7 +50,7 @@ class SmsSender
         }
 
         $adminPhone = Config::get('sms-manager.admin_phone');
-        $receiver_number = $adminPhone ? $adminPhone : $data['receiver_number'];
+        $receiver_number = $adminPhone ? $adminPhone : $user->phone;
         $to = $user->name;
 
         // HACKHACK: Needs to update the database instead
@@ -69,6 +70,12 @@ class SmsSender
         }
 
         if (!$message->receiver_number) {
+            return false;
+        }
+
+        if (InvalidPhone::wherePhone($message->receiver_number)->exists())
+        {
+            $command->comment('Marked as invalid phone ' . $message->receiver_number);
             return false;
         }
 
@@ -121,6 +128,8 @@ class SmsSender
                 $command->error('Insufficient Credits from provider');
             } elseif (preg_match('/^1705/', $response)) {
                 $command->error('Invalid Mobile Number');
+
+
             } else {
                 $command->error('Unmatched Error:' . $response);
             }
