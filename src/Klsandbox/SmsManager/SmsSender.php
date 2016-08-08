@@ -36,14 +36,14 @@ class SmsSender
             $command->comment('route:' . $route);
         }
 
-        $data = $this->router->dispatch($request)->getOriginalContent();
+        $item = $this->router->dispatch($request)->getOriginalContent();
 
-        if ($data === null) {
+        if ($item === null) {
             return null;
         }
 
         $view = 'sms.' . $route;
-        $message = view($view, $data);
+        $message = view($view, ['item' => $item]);
 
         if (Config::get('sms-manager.prefix')) {
             $message = Config::get('sms-manager.prefix') . $message;
