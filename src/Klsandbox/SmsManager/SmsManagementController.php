@@ -31,6 +31,8 @@ class SmsManagementController extends Controller
 
     public function getFakeSms()
     {
+        debugbar()->disable();
+
         return '1701:' . mt_rand(1000000, 99999999);
     }
 
