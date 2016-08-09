@@ -21,7 +21,7 @@ class SmsTopUp extends Command
         $balance = SmsBalance::first();
 
         if (!$balance) {
-            $this->error("Sms Balance not found");
+            $this->error('Sms Balance not found');
 
             return;
         }

@@ -39,7 +39,7 @@ class SmsSender
         $item = $this->router->dispatch($request)->getOriginalContent();
 
         if ($item === null) {
-            return null;
+            return;
         }
 
         $view = 'sms.' . $route;
@@ -66,22 +66,23 @@ class SmsSender
         $message = $this->getMessage($route, $target_id, $user, $command);
 
         if ($message === null) {
-            return null;
+            return;
         }
 
         if (!$message->receiver_number) {
             return false;
         }
 
-        if (InvalidPhone::wherePhone($message->receiver_number)->exists())
-        {
+        if (InvalidPhone::wherePhone($message->receiver_number)->exists()) {
             $command->comment('Marked as invalid phone ' . $message->receiver_number);
+
             return false;
         }
 
         $balance = SmsBalance::first();
         if ($balance->balance <= 0) {
             $command->error('no balance');
+
             return false;
         }
 
@@ -128,8 +129,6 @@ class SmsSender
                 $command->error('Insufficient Credits from provider');
             } elseif (preg_match('/^1705/', $response)) {
                 $command->error('Invalid Mobile Number');
-
-
             } else {
                 $command->error('Unmatched Error:' . $response);
             }
