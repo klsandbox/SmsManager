@@ -129,6 +129,10 @@ class SmsSender
                 $command->error('Insufficient Credits from provider');
             } elseif (preg_match('/^1705/', $response)) {
                 $command->error('Invalid Mobile Number');
+
+                $item = new InvalidPhone();
+                $item->phone = $messageObject->receiver_number;
+                $item->save();
             } else {
                 $command->error('Unmatched Error:' . $response);
             }
