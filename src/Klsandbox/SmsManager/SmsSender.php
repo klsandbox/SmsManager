@@ -42,8 +42,12 @@ class SmsSender
             return;
         }
 
-        $view = 'sms.' . $route;
-        $message = view($view, ['item' => $item]);
+        if ($route == 'direct-sms') {
+            $message = $item->text;
+        } else {
+            $view = 'sms.' . $route;
+            $message = view($view, ['item' => $item]);
+        }
 
         if (Config::get('sms-manager.prefix')) {
             $message = Config::get('sms-manager.prefix') . $message;
