@@ -115,7 +115,7 @@
                             <div class="col-md-12">
                                 <form method="post" action="{{ url('sms-management/delete-all') }}">
                                     {{ csrf_field() }}
-                                    <button class="btn btn-danger pull-right delete_with_confirm"><i class="fa fa-trash"></i> Delete all pending notification</button>
+                                    <button id="delete_all_pending_notification_button" class="btn btn-danger pull-right delete_with_confirm"><i class="fa fa-trash"></i> Delete all pending notification</button>
                                 </form>
                                 <br>
                                 <br>
